@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { TrendingUp, DollarSign, Percent, Activity } from 'lucide-react';
+import { TrendingUp, DollarSign, Percent, Activity, RefreshCw } from 'lucide-react';
+import { useYieldData } from '@/hooks/useYieldData';
 
 interface MetricCardProps {
   title: string;
@@ -29,58 +30,100 @@ function MetricCard({ title, value, change, icon, positive = true }: MetricCardP
 }
 
 export function YieldDashboard() {
-  const [totalValue] = useState('$125,432.50');
-  const [apy] = useState('18.4%');
-  const [dailyEarnings] = useState('$62.15');
-  const [activePositions] = useState('7');
+  const { metrics, history, isLoading } = useYieldData();
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    // Trigger refetch
+    setTimeout(() => setIsRefreshing(false), 2000);
+  };
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(value);
+  };
+
+  const formatPercentage = (value: number) => {
+    return `${value.toFixed(1)}%`;
+  };
+
+  if (isLoading) {
+    return (
+      <section className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold">Portfolio Overview</h2>
+          <div className="w-32 h-10 bg-bg/50 rounded-lg animate-pulse"></div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="metric-card animate-pulse">
+              <div className="w-full h-20 bg-bg/50 rounded"></div>
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">Portfolio Overview</h2>
-        <button className="btn-secondary text-sm">
-          Refresh Data
+        <button
+          onClick={handleRefresh}
+          disabled={isRefreshing}
+          className="btn-secondary text-sm flex items-center gap-2"
+        >
+          <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+          {isRefreshing ? 'Refreshing...' : 'Refresh Data'}
         </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard
           title="Total Value Locked"
-          value={totalValue}
+          value={formatCurrency(metrics.totalValue)}
           change="+12.3%"
           icon={<DollarSign className="w-6 h-6 text-accent" />}
         />
         <MetricCard
           title="Average APY"
-          value={apy}
+          value={formatPercentage(metrics.totalAPY)}
           change="+2.1%"
           icon={<Percent className="w-6 h-6 text-accent" />}
         />
         <MetricCard
           title="Daily Earnings"
-          value={dailyEarnings}
+          value={formatCurrency(metrics.dailyEarnings)}
           change="+8.5%"
           icon={<TrendingUp className="w-6 h-6 text-accent" />}
         />
         <MetricCard
           title="Active Positions"
-          value={activePositions}
+          value={metrics.activePositions.toString()}
           change="+1"
           icon={<Activity className="w-6 h-6 text-accent" />}
         />
       </div>
 
-      {/* Yield Chart Placeholder */}
+      {/* Yield Chart */}
       <div className="glass-card p-6 rounded-xl">
         <h3 className="text-lg font-semibold mb-4">Yield Performance (30 Days)</h3>
-        <div className="h-64 flex items-end justify-between gap-2">
-          {Array.from({ length: 30 }).map((_, i) => {
-            const height = Math.random() * 100;
+        <div className="h-64 flex items-end justify-between gap-1">
+          {history.slice(-30).map((data, i) => {
+            const maxValue = Math.max(...history.map(d => d.value));
+            const height = (data.value / maxValue) * 100;
             return (
               <div
                 key={i}
-                className="flex-1 bg-gradient-to-t from-accent/50 to-accent rounded-t"
-                style={{ height: `${height}%` }}
+                className="flex-1 bg-gradient-to-t from-accent/50 to-accent rounded-t min-w-[2px] hover:from-accent/70 hover:to-accent transition-all duration-200"
+                style={{ height: `${Math.max(height, 2)}%` }}
+                title={`${data.date}: ${formatCurrency(data.value)}`}
               />
             );
           })}
@@ -88,6 +131,20 @@ export function YieldDashboard() {
         <div className="flex justify-between mt-4 text-sm text-muted">
           <span>30 days ago</span>
           <span>Today</span>
+        </div>
+        <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
+          <div>
+            <span className="text-muted">Total Growth: </span>
+            <span className="text-green-400 font-semibold">
+              +{formatCurrency(history[history.length - 1]?.value - history[0]?.value || 0)}
+            </span>
+          </div>
+          <div>
+            <span className="text-muted">Avg Daily: </span>
+            <span className="text-accent font-semibold">
+              {formatCurrency(history.reduce((sum, d) => sum + d.earnings, 0) / history.length || 0)}
+            </span>
+          </div>
         </div>
       </div>
     </section>

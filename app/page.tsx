@@ -3,6 +3,7 @@ import { YieldDashboard } from '@/components/YieldDashboard';
 import { ProtocolScanner } from '@/components/ProtocolScanner';
 import { RebalanceEngine } from '@/components/RebalanceEngine';
 import { AerodromeCompounder } from '@/components/AerodromeCompounder';
+import { Backtester } from '@/components/Backtester';
 
 export default function Home() {
   return (
@@ -42,6 +43,9 @@ export default function Home() {
 
         {/* Aerodrome Compounder */}
         <AerodromeCompounder />
+
+        {/* Gas-Optimized Backtester */}
+        <Backtester />
       </div>
 
       {/* Footer */}

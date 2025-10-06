@@ -1,8 +1,7 @@
 'use client';
 
-import { ConnectWallet, Wallet } from '@coinbase/onchainkit/wallet';
-import { Name, Avatar } from '@coinbase/onchainkit/identity';
 import { TrendingUp } from 'lucide-react';
+import { WalletConnect } from './WalletConnect';
 
 export function Header() {
   return (
@@ -19,12 +18,7 @@ export function Header() {
             </div>
           </div>
 
-          <Wallet>
-            <ConnectWallet className="btn-primary">
-              <Avatar className="w-6 h-6" />
-              <Name className="font-semibold" />
-            </ConnectWallet>
-          </Wallet>
+          <WalletConnect />
         </div>
       </div>
     </header>
