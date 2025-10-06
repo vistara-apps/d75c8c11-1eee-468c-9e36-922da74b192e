@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* YieldPilot Finance Theme - Wall Street meets Crypto */
+  --color-bg: #0a1628;
+  --color-fg: #e8edf5;
+  --color-accent: #ffd700;
+  --color-accent-hover: #ffed4e;
+  --color-muted: #64748b;
+  --color-border: #1e3a5f;
+  --border-radius: 0.5rem;
+}
+
+[data-theme="celo"] {
+  --color-bg: #000000;
+  --color-fg: #ffffff;
+  --color-accent: #fbcc5c;
+  --color-accent-hover: #fcd978;
+  --color-muted: #999999;
+  --color-border: #333333;
+  --border-radius: 0.25rem;
+}
+
+[data-theme="solana"] {
+  --color-bg: #1a0b2e;
+  --color-fg: #f0f0f0;
+  --color-accent: #9945ff;
+  --color-accent-hover: #b366ff;
+  --color-muted: #8b7fb8;
+  --color-border: #3d2d5f;
+  --border-radius: 0.75rem;
+}
+
+[data-theme="base"] {
+  --color-bg: #0052ff;
+  --color-fg: #ffffff;
+  --color-accent: #0052ff;
+  --color-accent-hover: #0066ff;
+  --color-muted: #a3c1ff;
+  --color-border: #0041cc;
+  --border-radius: 1rem;
+}
+
+[data-theme="coinbase"] {
+  --color-bg: #0a0b0d;
+  --color-fg: #f4f4f4;
+  --color-accent: #0052ff;
+  --color-accent-hover: #0066ff;
+  --color-muted: #8a8a8a;
+  --color-border: #2e3338;
+  --border-radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-gray-700;
+  }
+  
+  body {
+    @apply bg-bg text-fg;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  }
+}
+
+@layer components {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid;
+    border-color: rgb(255 255 255 / 0.1);
+  }
+
+  .btn-primary {
+    @apply bg-accent text-bg px-6 py-3 rounded-lg font-semibold hover:bg-accent-hover transition-all duration-200 shadow-lg hover:shadow-xl;
+  }
+
+  .btn-secondary {
+    @apply glass-card text-fg px-6 py-3 rounded-lg font-semibold hover:bg-opacity-20 transition-all duration-200;
+  }
+
+  .metric-card {
+    @apply glass-card p-6 rounded-xl hover:bg-opacity-15 transition-all duration-200;
+  }
+
+  .protocol-badge {
+    @apply glass-card px-3 py-1 rounded-full text-sm font-medium;
+  }
+
+  .yield-bar {
+    @apply h-2 rounded-full bg-gradient-to-r from-accent to-accent-hover;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-accent to-accent-hover bg-clip-text text-transparent;
+  }
+
+  .border-gradient {
+    border-image: linear-gradient(to right, var(--color-accent), var(--color-accent-hover)) 1;
+  }
+}
