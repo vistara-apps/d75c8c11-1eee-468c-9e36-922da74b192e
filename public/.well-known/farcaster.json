@@ -1,0 +1,30 @@
+{
+  "accountAssociation": {
+    "header": "",
+    "payload": "",
+    "signature": ""
+  },
+  "frame": {
+    "version": "1",
+    "name": "YieldPilot",
+    "subtitle": "Built with Zara",
+    "description": "YieldPilot is a Base Mini App built with Zara.",
+    "iconUrl": "https://0co.to/images/zara-2.png",
+    "homeUrl": "https://d75c8c111eee468c9e36922da74b192e-8qk3.vercel.app",
+    "splashImageUrl": "https://d75c8c111eee468c9e36922da74b192e-8qk3.vercel.app/splash.png",
+    "splashBackgroundColor": "#000000",
+    "heroImageUrl": "https://d75c8c111eee468c9e36922da74b192e-8qk3.vercel.app/image.png",
+    "tagline": "YieldPilot",
+    "screenshotUrls": [
+      "https://d75c8c111eee468c9e36922da74b192e-8qk3.vercel.app/screenshot.png",
+      "https://d75c8c111eee468c9e36922da74b192e-8qk3.vercel.app/screenshot.png"
+    ],
+    "primaryCategory": "social",
+    "tags": [
+      "base",
+      "miniapp",
+      "onchainkit"
+    ],
+    "webhookUrl": "https://d75c8c111eee468c9e36922da74b192e-8qk3.vercel.app/api/webhook"
+  }
+}
